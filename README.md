@@ -1,6 +1,6 @@
-# Alphonso Woodbury | Tech Explorer
+# Alphonso Woodbury | Big DataOps
 
-I'm Alphonso Woodbury, a DevOps and Big Data enthusiast.
+👋🏽
 
 ## 💼 Professional Snapshot
 
