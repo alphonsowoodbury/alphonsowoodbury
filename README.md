@@ -18,11 +18,6 @@
 - **Democracy Supporter:** Civic engagement.
 - **Sustainability Ally:** Committed to eco-conscious practices.
 
-## 📚 Technical Showcase
-
-- [Portfolio](https://www.yourportfolio.com)
-- [GitHub Repositories](https://github.com/yourusername?tab=repositories)
-
 ## 🌟 Let's Connect
 
-[LinkedIn](https://www.linkedin.com/in/alphonso/) | [Email](mailto:alphonso@example.com)
+[LinkedIn](https://www.linkedin.com/in/alphonsowoodbury/) | [Email](mailto:alphonso.woodbury@icloud.com)
