@@ -1,4 +1,5 @@
-# 👋🏽👷🏽‍♂️Alphonso Woodbury | DevOps and Big Data Engineer 
+### 👋🏽👷🏽‍♂️Alphonso Woodbury
+### DevOps and Big Data Engineer 
 
 ## 💼 Professional Snapshot
 
@@ -12,6 +13,7 @@
 - **Musician:** Songwriting, Production.
 - **Design Advocate:** Shaping productivity.
 - **Inclusion Promoter:** Diverse perspectives.
+- **Can Die Happy:** Saw Hamilton from the front row.
 - **Travel Explorer:** Exploring cultures.
 - **Democracy Supporter:** Civic engagement.
 - **Sustainability Ally:** Committed to eco-conscious practices.
