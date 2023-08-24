@@ -1,6 +1,4 @@
-# Alphonso Woodbury | Big DataOps
-
-👋🏽
+# 👋🏽👷🏽‍♂️Alphonso Woodbury | DevOps and Big Data Engineer 
 
 ## 💼 Professional Snapshot
 
@@ -18,6 +16,6 @@
 - **Democracy Supporter:** Civic engagement.
 - **Sustainability Ally:** Committed to eco-conscious practices.
 
-## 🌟 Let's Connect
+## 🌟 Let's Connect!
 
 [LinkedIn](https://www.linkedin.com/in/alphonsowoodbury/) | [Email](mailto:alphonso.woodbury@icloud.com)
