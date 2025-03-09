@@ -1,0 +1,20 @@
+name: Create Issues from CSV
+
+on:
+  workflow_dispatch: # Allows manual trigger from Actions tab
+
+jobs:
+  create_issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Read CSV and create issues
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          while IFS=, read -r title body labels
+          do
+            gh issue create --title "$title" --body "$body" --label "$labels"
+          done < github_issues.csv
