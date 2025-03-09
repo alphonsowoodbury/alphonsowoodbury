@@ -1,0 +1,28 @@
+Month,Book,Project
+Month 1,"Fundamentals of Data Engineering – Joe Reis, Matt Housley",Build a real-time data pipeline with Spark & Snowflake
+Month 1,Data Engineering Design Patterns – Bartosz Konieczny,Design an ETL framework for scalable ingestion
+Month 1,Data Management at Scale (2nd Edition) – Piethein Strengholt,Optimize data processing with Python & Pandas
+Month 1,"Architecting Data and Machine Learning Platforms – Marco Tranquillin, Valliappa Lakshmanan",Develop an AI-ready data warehouse architecture
+Month 1,Python Cookbook – Alex Martelli,Implement advanced Python workflows for data engineering
+Month 1,Staff Engineer: Leadership Beyond the Management Track – Will Larson,Analyze leadership patterns in high-performance teams
+Month 2,"Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow (3rd Edition) – Aurélien Géron",Develop an ML model for predictive analytics
+Month 2,"Machine Learning Design Patterns – Lakshmanan, Robinson, Munn",Implement reusable ML architecture patterns
+Month 2,Fluent Python (2nd Edition) – Luciano Ramalho,Refactor Python scripts for large-scale ML processing
+Month 2,High Performance Python (3rd Edition) – Micha Gorelick,Optimize an ML pipeline for speed and efficiency
+Month 2,The Staff Engineer’s Path – Tanya Reilly,Map Staff Engineer career growth using knowledge graphs
+Month 3,Designing Machine Learning Systems – Chip Huyen,Deploy an ML model with CI/CD & MLOps best practices
+Month 3,Practical MLOps – Noah Gift,Automate AI workflows using MLOps pipelines
+Month 3,Kubernetes: Up & Running (3rd Edition) – Kelsey Hightower,Containerize an ML model and deploy on Kubernetes
+Month 3,Terraform: Up and Running (3rd Edition) – Yevgeniy Brikman,Automate infrastructure provisioning with Terraform
+Month 3,"The DevOps Handbook (2nd Edition) – Kim, Humble, Debois",Implement DevOps best practices in AI deployment
+Month 3,The Manager’s Path – Camille Fournier,Mentor a junior engineer on system reliability principles
+Month 4,Designing Data-Intensive Applications – Martin Kleppmann,Design a scalable data & AI system (FAANG interview-level)
+Month 4,"The Art of Scalability – Abbott, Fisher",Architect and optimize a large-scale data pipeline
+Month 4,Building Evolutionary Architectures – Neal Ford,Implement feature flags for evolving ML architectures
+Month 4,"Mastering API Architecture – Gough, Bryant, Auburn",Develop an API-driven ML service
+Month 4,Leading Effective Engineering Teams – Addy Osmani,Lead an engineering deep-dive session on team best practices
+Month 5,HBR’s 10 Must Reads on AI,Analyze AI use cases in FAANG & their business impact
+Month 5,AI-Powered Business Intelligence – Tobias Zwingmann,Develop a data-driven AI business intelligence dashboard
+Month 5,Decision Intelligence – Thorsten Heilig,Design an AI-powered decision-making framework
+Month 5,The Engineering Executive’s Primer – Will Larson,Draft an AI-first leadership strategy for engineering teams
+Month 5,Communication Patterns – Jacqui Read,Develop a technical influence strategy for cross-functional teams
