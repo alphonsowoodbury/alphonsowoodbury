@@ -1,0 +1,37 @@
+name: Clean Issue Titles in Library Project
+
+on:
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  clean_titles:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
+
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh auth status
+
+      - name: Fetch and Rename Issues in alphiephalphie Repo
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REPO="alphiephalphie/alphiephalphie"
+
+          # Get all issues that start with "Month X - "
+          gh issue list --repo "$REPO" --limit 100 --json number,title \
+            | jq -c '.[] | select(.title | test("^Month [0-9]+ - "))' \
+            | while read -r issue
+          do
+            ISSUE_NUMBER=$(echo "$issue" | jq -r '.number')
+            NEW_TITLE=$(echo "$issue" | jq -r '.title' | sed -E 's/^Month [0-9]+ - //')
+
+            echo "Updating issue #$ISSUE_NUMBER to: $NEW_TITLE"
+            gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --title "$NEW_TITLE"
+          done
