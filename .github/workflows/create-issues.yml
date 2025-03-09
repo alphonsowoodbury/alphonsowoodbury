@@ -1,7 +1,7 @@
 name: Create Issues from CSV
 
 on:
-  workflow_dispatch: # Allows manual trigger from Actions tab
+  workflow_dispatch:
 
 jobs:
   create_issues:
@@ -10,11 +10,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install GitHub CLI
+        run: |
+          sudo apt update
+          sudo apt install gh -y
+
+      - name: Authenticate GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh auth status
+
       - name: Read CSV and create issues
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          while IFS=, read -r title body labels
+          # Extract existing labels
+          EXISTING_LABELS=$(gh label list --json name -q '.[].name')
+
+          # Process the CSV file
+          tail -n +2 github_issues.csv | while IFS=, read -r title body labels
           do
+            # Check and create missing labels
+            for label in $(echo "$labels" | tr ";" "\n")
+            do
+              if [[ ! $EXISTING_LABELS =~ $label ]]; then
+                echo "Creating label: $label"
+                gh label create "$label" --color "b60205"
+              fi
+            done
+            
+            # Create the issue
             gh issue create --title "$title" --body "$body" --label "$labels"
-          done < github_issues.csv
+          done
