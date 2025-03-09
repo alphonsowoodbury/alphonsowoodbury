@@ -31,15 +31,18 @@ jobs:
           # Process the CSV file
           tail -n +2 github_issues.csv | while IFS=, read -r title body labels
           do
+            # Sanitize labels (remove quotes and extra spaces)
+            CLEAN_LABELS=$(echo "$labels" | tr -d '"' | tr -d "'" | sed 's/, /,/g')
+
             # Check and create missing labels
-            for label in $(echo "$labels" | tr ";" "\n")
+            for label in $(echo "$CLEAN_LABELS" | tr "," "\n")
             do
-              if [[ ! $EXISTING_LABELS =~ $label ]]; then
+              if [[ ! " ${EXISTING_LABELS} " =~ " ${label} " ]]; then
                 echo "Creating label: $label"
                 gh label create "$label" --color "b60205"
               fi
             done
             
             # Create the issue
-            gh issue create --title "$title" --body "$body" --label "$labels"
+            gh issue create --title "$title" --body "$body" --label "$CLEAN_LABELS"
           done
