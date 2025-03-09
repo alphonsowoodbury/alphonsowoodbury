@@ -25,7 +25,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Extract existing labels
+          # Extract existing labels and store them in an array
           EXISTING_LABELS=$(gh label list --json name -q '.[].name')
 
           # Process the CSV file
@@ -34,13 +34,13 @@ jobs:
             # Sanitize labels (remove quotes, trim spaces)
             CLEAN_LABELS=$(echo "$labels" | tr -d '"' | tr -d "'" | sed 's/, */,/g')
 
-            # Create missing labels
+            # Create missing labels (ignoring errors if they exist)
             for label in $(echo "$CLEAN_LABELS" | tr "," "\n")
             do
               label_trimmed=$(echo "$label" | xargs) # Trim spaces
               if [[ ! " ${EXISTING_LABELS} " =~ " ${label_trimmed} " ]]; then
                 echo "Creating label: '$label_trimmed'"
-                gh label create "$label_trimmed" --color "b60205"
+                gh label create "$label_trimmed" --color "b60205" || echo "Label '$label_trimmed' already exists, skipping..."
               fi
             done
             
