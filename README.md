@@ -12,14 +12,13 @@ A **serverless data ingestion platform** designed to automate the collection, tr
 - Event-driven architecture using **AWS Lambda** and **Step Functions**  
 - Focused on **privacy**, **scalability**, and **data consistency**
 
-### **Chronicle: Privacy-First Journal**  
-A journaling app built with **simplicity** and **security** in mind.  
-- **End-to-end encryption** for total privacy  
-- **Offline-first** with **iCloud sync** for seamless use  
-- **GPT summaries** and **quick entry flow** for easy journaling  
-- Designed with a focus on **mental health** and **productivity**
+### **Chronicle: Privacy-First Personal Knowledge System**
 
-**Future vision**: Integration with **HealthKit**, **multi-device support**, and more!
+A comprehensive personal knowledge management app designed with **simplicity**, **security**, and **efficiency** in mind.  
+- **End-to-end encryption** for complete privacy and control over your data  
+- **Offline-first** with **iCloud sync** for seamless access across devices  
+- **Store and organize thoughts, events, reading lists, and important details**—all in one place  
+- Built to be **AI-ready on-device**, enabling future intelligent features with full data privacy  
 
 ---
 
