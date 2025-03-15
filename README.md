@@ -6,11 +6,12 @@ Software engineer and problem solver who thrives on delivering **outcome-driven 
 
 ## 🚀 Key Projects
 
-### **Tudo**  
-A **serverless data ingestion platform** designed to automate the collection, transformation, and storage of open data.  
+### **Tudo**
+
+A **data ingestion platform** designed to automate the collection, transformation, and storage of open data at scale.  
 - **AI-ready** data pipelines with **metadata generation** and **schema validation**  
-- Event-driven architecture using **AWS Lambda** and **Step Functions**  
-- Focused on **privacy**, **scalability**, and **data consistency**
+- Built for **privacy**, **scalability**, and **data consistency**  
+- **High-performance, event-driven** architecture for efficient data processing  
 
 ### **Chronicle: Privacy-First Personal Knowledge System**
 
