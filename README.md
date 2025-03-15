@@ -1,39 +1,44 @@
 # 👋🏽
 
-I’m a software engineer with a passion for building scalable, privacy-first systems. I love working on cloud-native architectures, AI-driven tools, and Apple development. When I’m not deep in code, I’m probably thinking about personal knowledge systems and mental health apps.
+I'm a software engineer focused on building **scalable, reliable, and privacy-first systems**. With a background in **cloud-native architectures**, **AI-driven solutions**, and **Apple development**, I specialize in delivering high-impact projects that solve complex challenges. When I’m not writing code, I’m thinking about how to optimize workflows, enhance productivity, and design systems that prioritize user trust.
 
 ---
 
-## 🚀 Projects I’m Working On
+## 🚀 Key Projects
 
-### Tudo
-A serverless data ingestion platform that automates the process of collecting, transforming, and storing open data. It focuses on making data AI-ready with automatic metadata generation, schema validation, and event-driven processing.
+### **Tudo**  
+A **serverless data ingestion platform** designed to automate the collection, transformation, and storage of open data.  
+- **AI-ready** data pipelines with **automatic metadata generation** and **schema validation**  
+- Event-driven architecture using **AWS Lambda** and **Step Functions**  
+- Scalable and reliable, focused on **data consistency** and **privacy-first principles**
 
-### Chronicle: Privacy-First Journal
-A journaling app designed for simplicity and privacy.  
-- End-to-end encryption  
-- Offline-first with iCloud sync  
-- Quick entry flow with GPT summaries  
-- Mental health and productivity-focused  
+### **Chronicle: Privacy-First Journal**  
+A journaling app built for **efficiency** and **security**.  
+- **End-to-end encryption** for data protection  
+- **Offline-first** with **iCloud sync** for seamless experience  
+- **GPT-driven summaries** and fast entry flow for user convenience  
+- Focused on **mental health** and **productivity**  
 
-**Future plans**: Integrate HealthKit, multi-device support, and more!
-
----
-
-## 💡 Why I Build
-
-I focus on creating tools that make people’s lives easier while respecting their privacy. Whether it’s a journaling app that keeps your thoughts safe or a data platform that handles complex workflows with ease, it’s all about user trust and minimal friction.
+**Future vision**: Integration with **HealthKit**, **multi-device support**, and personalized ML-driven prompts.
 
 ---
 
-## 🛠️ Tech I Use
-- **Languages**: Python, Swift, Java
-- **Cloud**: AWS (Lambda, S3, DynamoDB), iCloud, CloudKit
-- **Tools**: Git, Terraform, SwiftUI, Docker
-- **Privacy**: End-to-end encryption, local storage, GDPR
+## 💡 Approach to Engineering
+
+I build solutions that **scale**, **automate**, and **simplify** complex processes. Whether it’s optimizing data pipelines or creating seamless mobile experiences, I prioritize **reliability**, **maintainability**, and **security**. My goal is to deliver systems that **empower users** while minimizing friction and complexity.
 
 ---
 
-## 🤝 Let’s Connect!
+## 🛠️ Tech Stack & Expertise
 
-Feel free to reach out if you want to chat about tech, mental health, or just exchange ideas. I’m always up for a good convo! 😄
+- **Languages**: Python, Swift, Java, SQL  
+- **Cloud**: AWS (Lambda, S3, DynamoDB, Step Functions), CloudKit, iCloud  
+- **Tools**: Git, Terraform, Docker, SwiftUI, Jenkins  
+- **Data**: Event-driven architectures, ETL pipelines, Data lakes  
+- **Privacy**: End-to-end encryption, GDPR compliance, secure data storage
+
+---
+
+## 🤝 Let’s Connect
+
+I’m always open to discussing complex engineering challenges, exploring new tech, or collaborating on projects that push the boundaries of what’s possible. If you’re interested in **data engineering**, **cloud architecture**, or **mobile development**, let’s chat.
