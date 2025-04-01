@@ -1,183 +1,260 @@
-I'll design a DynamoDB service for a Python Lambda in an ETL platform that interfaces with two tables. Let me break this down into a comprehensive design.
+# DynamoDB Service Implementation for Data Platform
 
-## DynamoDB Service Architecture
+## Service Architecture
 
-First, let's establish the core components for this service:
+Based on your serverless event-driven architecture, I've redesigned the DynamoDB service to align with your existing RunTable and FileTable schema and semantics.
 
 ```python
 import boto3
 import logging
-from typing import Dict, List, Any, Optional, Union
+from typing import Dict, List, Any, Optional, Literal, Union
 from botocore.exceptions import ClientError
-from dataclasses import dataclass
+from datetime import datetime
+from uuid import uuid4
+from pydantic import BaseModel, Field, validator, root_validator
 
-# Configure logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
-class DynamoDBService:
-    """Service for interacting with DynamoDB tables in an ETL pipeline."""
+# Core Models
+class RunStatus(BaseModel):
+    """Valid status values for a dataset acquisition run."""
+    status: Literal["pending", "dispatched", "processing", "success", "failed", "cancelled"]
+
+class FileStatus(BaseModel):
+    """Valid status values for an individual file in processing."""
+    status: Literal["pending", "fetched", "verified", "preprocessed", "failed"]
+
+class RunTableItem(BaseModel):
+    """Run-level tracking for dataset acquisition jobs."""
+    runId: str
+    datasetName: str
+    businessDate: str
+    sourceType: Literal["control-m", "s3", "manual", "internal"]
+    sourceTrigger: Dict[str, Any]
+    createdAt: str
+    status: str
+    resolvedFiles: int = 0
+    processedFiles: int = 0
+    environment: Literal["staging", "prod"]
+    metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    error: Optional[Dict[str, Any]] = None
     
-    def __init__(self, region_name: str = 'us-east-1'):
-        """
-        Initialize the DynamoDB service.
+    @validator('status')
+    def validate_status(cls, v):
+        valid_statuses = ["pending", "dispatched", "processing", "success", "failed", "cancelled"]
+        if v not in valid_statuses:
+            raise ValueError(f"Invalid run status: {v}. Must be one of {valid_statuses}")
+        return v
+    
+    @validator('createdAt')
+    def validate_timestamp(cls, v):
+        try:
+            datetime.fromisoformat(v)
+        except ValueError:
+            raise ValueError(f"Invalid ISO timestamp format: {v}")
+        return v
+    
+    class Config:
+        extra = "forbid"
         
-        Args:
-            region_name: AWS region where DynamoDB tables are located
-        """
-        self.dynamo_client = boto3.client('dynamodb', region_name=region_name)
-        self.dynamo_resource = boto3.resource('dynamodb', region_name=region_name)
-        self.table1 = self.dynamo_resource.Table('table1_name')
-        self.table2 = self.dynamo_resource.Table('table2_name')
+    def to_dynamo_item(self) -> Dict:
+        """Convert model to DynamoDB item format."""
+        return self.dict(exclude_none=True)
+
+class FileTableItem(BaseModel):
+    """File-level tracking for individual files in a dataset run."""
+    fileId: str
+    runId: str
+    datasetName: str
+    businessDate: str
+    environment: Literal["staging", "prod"]
+    location: str
+    status: str
+    lastUpdated: str
+    fileSize: Optional[int] = None
+    checksum: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = Field(default_factory=dict)
+    error: Optional[Dict[str, Any]] = None
+    
+    @validator('status')
+    def validate_status(cls, v):
+        valid_statuses = ["pending", "fetched", "verified", "preprocessed", "failed"]
+        if v not in valid_statuses:
+            raise ValueError(f"Invalid file status: {v}. Must be one of {valid_statuses}")
+        return v
+    
+    @validator('lastUpdated')
+    def validate_timestamp(cls, v):
+        try:
+            datetime.fromisoformat(v)
+        except ValueError:
+            raise ValueError(f"Invalid ISO timestamp format: {v}")
+        return v
+    
+    @validator('location')
+    def validate_location(cls, v):
+        if not v.startswith(('s3://', 'https://', 'http://')):
+            raise ValueError(f"Invalid location URI: {v}")
+        return v
+    
+    class Config:
+        extra = "forbid"
+        
+    def to_dynamo_item(self) -> Dict:
+        """Convert model to DynamoDB item format."""
+        return self.dict(exclude_none=True)
 ```
 
-Let's define what these two tables will handle based on typical ETL patterns:
-
-1. Table 1: ETL Job Metadata/Control Table
-2. Table 2: Processed Data Table
-
-## Key Design Considerations
-
-Before implementing the specific functions, let's address some architectural considerations:
-
-1. **Error Handling & Retry Logic**: Essential for Lambda functions that might timeout
-2. **Batch Operations**: To handle volume efficiently
-3. **Consistency Model**: Understanding eventual vs. strong consistency needs
-4. **Throughput Management**: Handling provisioned capacity
-5. **Data Access Patterns**: Optimizing table design for query patterns
-
-## Implementation for Table 1 (ETL Job Metadata)
+## Table Interfaces
 
 ```python
-@dataclass
-class ETLJobMetadata:
-    """Data class for ETL job metadata."""
-    job_id: str
-    status: str
-    start_time: str
-    end_time: Optional[str] = None
-    records_processed: int = 0
-    source_details: Dict = None
-    destination_details: Dict = None
-    error_details: Dict = None
-
-class ETLJobTable:
-    """Interface for the ETL job metadata table."""
+class RunTableService:
+    """Interface for RunTable operations in the data pipeline."""
     
     def __init__(self, table):
         self.table = table
     
-    def create_job(self, job_metadata: ETLJobMetadata) -> Dict:
+    def create_run(self, run_item: RunTableItem) -> Dict:
         """
-        Create a new ETL job record.
+        Create a new run record in RunTable.
         
         Args:
-            job_metadata: ETL job metadata
+            run_item: Validated RunTableItem 
             
         Returns:
             Response from DynamoDB
-            
-        Raises:
-            ClientError: If DynamoDB operation fails
         """
         try:
             response = self.table.put_item(
-                Item={
-                    'job_id': job_metadata.job_id,
-                    'status': job_metadata.status,
-                    'start_time': job_metadata.start_time,
-                    'end_time': job_metadata.end_time,
-                    'records_processed': job_metadata.records_processed,
-                    'source_details': job_metadata.source_details,
-                    'destination_details': job_metadata.destination_details,
-                    'error_details': job_metadata.error_details
-                }
+                Item=run_item.to_dynamo_item()
             )
-            logger.info(f"Created ETL job record: {job_metadata.job_id}")
+            logger.info(f"Created run: {run_item.runId} for dataset {run_item.datasetName}")
             return response
         except ClientError as e:
-            logger.error(f"Failed to create ETL job: {e}")
+            logger.error(f"Failed to create run: {e}")
             raise
     
-    def update_job_status(self, job_id: str, status: str, 
-                         records_processed: Optional[int] = None,
-                         end_time: Optional[str] = None,
-                         error_details: Optional[Dict] = None) -> Dict:
+    def update_run_status(self, 
+                         run_id: str, 
+                         status: str,
+                         processed_files: Optional[int] = None,
+                         error: Optional[Dict] = None) -> Dict:
         """
-        Update ETL job status and related attributes.
+        Update run status and related attributes.
         
         Args:
-            job_id: Unique identifier for the job
-            status: New job status
-            records_processed: Number of records processed
-            end_time: Job end time
-            error_details: Details of any errors encountered
+            run_id: Unique run identifier
+            status: New status value
+            processed_files: Count of processed files
+            error: Error details if failed
             
         Returns:
             Response from DynamoDB
         """
+        # Validate the status
+        RunStatus(status=status)
+        
         update_expression = "SET #status = :status"
         expression_attribute_names = {'#status': 'status'}
         expression_attribute_values = {':status': status}
         
-        if records_processed is not None:
-            update_expression += ", records_processed = :records_processed"
-            expression_attribute_values[':records_processed'] = records_processed
+        if processed_files is not None:
+            update_expression += ", processedFiles = :processed_files"
+            expression_attribute_values[':processed_files'] = processed_files
             
-        if end_time is not None:
-            update_expression += ", end_time = :end_time"
-            expression_attribute_values[':end_time'] = end_time
-            
-        if error_details is not None:
-            update_expression += ", error_details = :error_details"
-            expression_attribute_values[':error_details'] = error_details
+        if error is not None:
+            update_expression += ", #error = :error"
+            expression_attribute_names['#error'] = 'error'
+            expression_attribute_values[':error'] = error
         
         try:
             response = self.table.update_item(
-                Key={'job_id': job_id},
+                Key={'runId': run_id},
                 UpdateExpression=update_expression,
                 ExpressionAttributeNames=expression_attribute_names,
                 ExpressionAttributeValues=expression_attribute_values,
                 ReturnValues="UPDATED_NEW"
             )
-            logger.info(f"Updated ETL job status: {job_id} -> {status}")
+            logger.info(f"Updated run status: {run_id} -> {status}")
             return response
         except ClientError as e:
-            logger.error(f"Failed to update ETL job status: {e}")
+            logger.error(f"Failed to update run status: {e}")
             raise
     
-    def get_job_details(self, job_id: str, consistent_read: bool = False) -> Dict:
+    def get_run(self, run_id: str, consistent_read: bool = False) -> Optional[RunTableItem]:
         """
-        Retrieve ETL job details.
+        Retrieve run details.
         
         Args:
-            job_id: Unique identifier for the job
+            run_id: Unique run identifier
             consistent_read: Whether to use strong consistency
             
         Returns:
-            Job item from DynamoDB
+            RunTableItem if found, None otherwise
         """
         try:
             response = self.table.get_item(
-                Key={'job_id': job_id},
+                Key={'runId': run_id},
                 ConsistentRead=consistent_read
             )
-            return response.get('Item')
+            
+            item = response.get('Item')
+            if not item:
+                return None
+                
+            return RunTableItem(**item)
         except ClientError as e:
-            logger.error(f"Failed to retrieve ETL job details: {e}")
+            logger.error(f"Failed to retrieve run details: {e}")
             raise
     
-    def query_jobs_by_status(self, status: str, limit: int = 10) -> List[Dict]:
+    def query_runs_by_dataset_and_date(self, 
+                                      dataset_name: str,
+                                      business_date: str,
+                                      limit: int = 10) -> List[RunTableItem]:
         """
-        Query ETL jobs by status using a global secondary index.
+        Query runs by dataset and business date using GSI.
         
         Args:
-            status: Job status to query
-            limit: Maximum number of items to return
+            dataset_name: Name of the dataset
+            business_date: Business date in ISO format
+            limit: Maximum items to return
             
         Returns:
-            List of job items
+            List of RunTableItem models
         """
+        try:
+            response = self.table.query(
+                IndexName='datasetName-businessDate-index',
+                KeyConditionExpression='datasetName = :ds AND businessDate = :bd',
+                ExpressionAttributeValues={
+                    ':ds': dataset_name,
+                    ':bd': business_date
+                },
+                Limit=limit
+            )
+            
+            return [RunTableItem(**item) for item in response.get('Items', [])]
+        except ClientError as e:
+            logger.error(f"Failed to query runs: {e}")
+            raise
+    
+    def query_runs_by_status(self, 
+                           status: str,
+                           limit: int = 10) -> List[RunTableItem]:
+        """
+        Query runs by status using GSI.
+        
+        Args:
+            status: Run status to filter by
+            limit: Maximum items to return
+            
+        Returns:
+            List of RunTableItem models
+        """
+        # Validate the status
+        RunStatus(status=status)
+        
         try:
             response = self.table.query(
                 IndexName='status-index',
@@ -186,141 +263,219 @@ class ETLJobTable:
                 ExpressionAttributeValues={':status_val': status},
                 Limit=limit
             )
-            return response.get('Items', [])
+            
+            return [RunTableItem(**item) for item in response.get('Items', [])]
         except ClientError as e:
-            logger.error(f"Failed to query ETL jobs by status: {e}")
+            logger.error(f"Failed to query runs by status: {e}")
             raise
-```
 
-## Implementation for Table 2 (Processed Data)
-
-```python
-class ProcessedDataTable:
-    """Interface for the processed data table."""
+class FileTableService:
+    """Interface for FileTable operations in the data pipeline."""
     
     def __init__(self, table):
         self.table = table
     
-    def batch_write_items(self, items: List[Dict]) -> Dict:
+    def create_file(self, file_item: FileTableItem) -> Dict:
         """
-        Write multiple items to the table in batch.
+        Create a new file record in FileTable.
         
         Args:
-            items: List of item dictionaries to write
+            file_item: Validated FileTableItem
+            
+        Returns:
+            Response from DynamoDB
+        """
+        try:
+            response = self.table.put_item(
+                Item=file_item.to_dynamo_item()
+            )
+            logger.info(f"Created file: {file_item.fileId} for run {file_item.runId}")
+            return response
+        except ClientError as e:
+            logger.error(f"Failed to create file: {e}")
+            raise
+    
+    def batch_create_files(self, file_items: List[FileTableItem]) -> Dict:
+        """
+        Create multiple file records in batch.
+        
+        Args:
+            file_items: List of validated FileTableItems
             
         Returns:
             Dictionary with 'UnprocessedItems' if any
         """
         try:
             with self.table.batch_writer() as batch:
-                for item in items:
-                    batch.put_item(Item=item)
+                for file_item in file_items:
+                    batch.put_item(Item=file_item.to_dynamo_item())
             
-            logger.info(f"Batch wrote {len(items)} items to processed data table")
+            logger.info(f"Batch created {len(file_items)} files")
             return {'UnprocessedItems': {}}
         except ClientError as e:
-            logger.error(f"Failed to batch write items: {e}")
+            logger.error(f"Failed to batch create files: {e}")
             raise
     
-    def query_data_by_partition(self, partition_key: str, 
-                               sort_key_condition: Optional[str] = None,
-                               filter_expression: Optional[str] = None,
-                               expression_attribute_values: Optional[Dict] = None) -> List[Dict]:
+    def update_file_status(self,
+                          file_id: str,
+                          status: str,
+                          file_size: Optional[int] = None,
+                          checksum: Optional[str] = None,
+                          error: Optional[Dict] = None) -> Dict:
         """
-        Query data by partition key with optional sort key condition.
+        Update file status and metadata.
         
         Args:
-            partition_key: Value of the partition key
-            sort_key_condition: Optional condition for sort key
-            filter_expression: Optional filter expression
-            expression_attribute_values: Values for the expressions
+            file_id: Unique file identifier
+            status: New status value
+            file_size: File size in bytes
+            checksum: File checksum
+            error: Error details if failed
             
         Returns:
-            List of items matching the query
+            Response from DynamoDB
         """
-        # Set up the basic key condition expression
-        key_condition = "partition_key = :pk"
+        # Validate the status
+        FileStatus(status=status)
         
-        if expression_attribute_values is None:
-            expression_attribute_values = {}
-            
-        expression_attribute_values[':pk'] = partition_key
-        
-        # Add sort key condition if provided
-        if sort_key_condition:
-            key_condition += f" AND {sort_key_condition}"
-        
-        query_params = {
-            'KeyConditionExpression': key_condition,
-            'ExpressionAttributeValues': expression_attribute_values
+        update_expression = "SET #status = :status, lastUpdated = :last_updated"
+        expression_attribute_names = {'#status': 'status'}
+        expression_attribute_values = {
+            ':status': status,
+            ':last_updated': datetime.now().isoformat()
         }
         
-        # Add filter expression if provided
-        if filter_expression:
-            query_params['FilterExpression'] = filter_expression
+        if file_size is not None:
+            update_expression += ", fileSize = :file_size"
+            expression_attribute_values[':file_size'] = file_size
+            
+        if checksum is not None:
+            update_expression += ", checksum = :checksum"
+            expression_attribute_values[':checksum'] = checksum
+            
+        if error is not None:
+            update_expression += ", #error = :error"
+            expression_attribute_names['#error'] = 'error'
+            expression_attribute_values[':error'] = error
         
         try:
-            response = self.table.query(**query_params)
-            return response.get('Items', [])
+            response = self.table.update_item(
+                Key={'fileId': file_id},
+                UpdateExpression=update_expression,
+                ExpressionAttributeNames=expression_attribute_names,
+                ExpressionAttributeValues=expression_attribute_values,
+                ReturnValues="UPDATED_NEW"
+            )
+            logger.info(f"Updated file status: {file_id} -> {status}")
+            return response
         except ClientError as e:
-            logger.error(f"Failed to query data: {e}")
+            logger.error(f"Failed to update file status: {e}")
             raise
     
-    def scan_data_with_filter(self, filter_expression: str,
-                             expression_attribute_values: Dict,
-                             limit: int = 100) -> List[Dict]:
+    def get_file(self, file_id: str, consistent_read: bool = False) -> Optional[FileTableItem]:
         """
-        Scan table with filter expression.
+        Retrieve file details.
         
         Args:
-            filter_expression: FilterExpression to apply
-            expression_attribute_values: Values for the expression
-            limit: Maximum number of items to return
+            file_id: Unique file identifier
+            consistent_read: Whether to use strong consistency
             
         Returns:
-            List of items matching the filter
+            FileTableItem if found, None otherwise
         """
         try:
-            response = self.table.scan(
-                FilterExpression=filter_expression,
-                ExpressionAttributeValues=expression_attribute_values,
-                Limit=limit
+            response = self.table.get_item(
+                Key={'fileId': file_id},
+                ConsistentRead=consistent_read
             )
-            return response.get('Items', [])
+            
+            item = response.get('Item')
+            if not item:
+                return None
+                
+            return FileTableItem(**item)
         except ClientError as e:
-            logger.error(f"Failed to scan data: {e}")
+            logger.error(f"Failed to retrieve file details: {e}")
             raise
-```
+    
+    def query_files_by_run(self, run_id: str) -> List[FileTableItem]:
+        """
+        Query all files for a specific run.
+        
+        Args:
+            run_id: Run identifier to filter by
+            
+        Returns:
+            List of FileTableItem models
+        """
+        try:
+            response = self.table.query(
+                IndexName='runId-index',
+                KeyConditionExpression='runId = :rid',
+                ExpressionAttributeValues={':rid': run_id}
+            )
+            
+            return [FileTableItem(**item) for item in response.get('Items', [])]
+        except ClientError as e:
+            logger.error(f"Failed to query files by run: {e}")
+            raise
+    
+    def query_files_by_dataset_and_status(self,
+                                         dataset_name: str,
+                                         status: str) -> List[FileTableItem]:
+        """
+        Query files by dataset and status using GSI.
+        
+        Args:
+            dataset_name: Name of the dataset
+            status: File status to filter by
+            
+        Returns:
+            List of FileTableItem models
+        """
+        # Validate the status
+        FileStatus(status=status)
+        
+        try:
+            response = self.table.query(
+                IndexName='datasetName-status-index',
+                KeyConditionExpression='datasetName = :ds AND #status = :status_val',
+                ExpressionAttributeNames={'#status': 'status'},
+                ExpressionAttributeValues={
+                    ':ds': dataset_name,
+                    ':status_val': status
+                }
+            )
+            
+            return [FileTableItem(**item) for item in response.get('Items', [])]
+        except ClientError as e:
+            logger.error(f"Failed to query files by dataset and status: {e}")
+            raise
 
-## Main DynamoDBService Class Integration
-
-Now, let's integrate these specialized interfaces into the main service:
-
-```python
-class DynamoDBService:
-    """Service for interacting with DynamoDB tables in an ETL pipeline."""
+class DataPlatformDynamoDBService:
+    """Main service for DynamoDB operations in the data platform."""
     
     def __init__(self, 
-                etl_table_name: str, 
-                data_table_name: str,
+                run_table_name: str, 
+                file_table_name: str,
                 region_name: str = 'us-east-1'):
         """
         Initialize the DynamoDB service.
         
         Args:
-            etl_table_name: Name of ETL job metadata table
-            data_table_name: Name of processed data table
-            region_name: AWS region where DynamoDB tables are located
+            run_table_name: Name of RunTable
+            file_table_name: Name of FileTable
+            region_name: AWS region
         """
         self.dynamo_resource = boto3.resource('dynamodb', region_name=region_name)
         
         # Initialize tables
-        self.etl_table = self.dynamo_resource.Table(etl_table_name)
-        self.data_table = self.dynamo_resource.Table(data_table_name)
+        self.run_table = self.dynamo_resource.Table(run_table_name)
+        self.file_table = self.dynamo_resource.Table(file_table_name)
         
         # Initialize interfaces
-        self.etl_jobs = ETLJobTable(self.etl_table)
-        self.processed_data = ProcessedDataTable(self.data_table)
+        self.runs = RunTableService(self.run_table)
+        self.files = FileTableService(self.file_table)
         
     def health_check(self) -> Dict[str, bool]:
         """
@@ -332,37 +487,51 @@ class DynamoDBService:
         health = {}
         
         try:
-            self.etl_table.table_status
-            health['etl_table'] = True
+            self.run_table.table_status
+            health['run_table'] = True
         except Exception as e:
-            logger.error(f"ETL table health check failed: {e}")
-            health['etl_table'] = False
+            logger.error(f"RunTable health check failed: {e}")
+            health['run_table'] = False
             
         try:
-            self.data_table.table_status
-            health['data_table'] = True
+            self.file_table.table_status
+            health['file_table'] = True
         except Exception as e:
-            logger.error(f"Data table health check failed: {e}")
-            health['data_table'] = False
+            logger.error(f"FileTable health check failed: {e}")
+            health['file_table'] = False
             
         return health
+    
+    def generate_file_id(self, dataset_name: str, business_date: str, file_path: str) -> str:
+        """
+        Generate a deterministic file ID based on dataset, date and path.
+        
+        Args:
+            dataset_name: Name of the dataset
+            business_date: Business date
+            file_path: Full path or URL to the file
+            
+        Returns:
+            Hashed file ID string
+        """
+        import hashlib
+        hash_input = f"{dataset_name}:{business_date}:{file_path}"
+        return hashlib.md5(hash_input.encode('utf-8')).hexdigest()
 ```
 
-## Lambda Handler Integration
-
-Finally, here's an example of how to use this service in a Lambda function:
+## Lambda Integration
 
 ```python
 import json
 import os
-import datetime
-from uuid import uuid4
+from typing import List, Dict, Any
+from datetime import datetime
 
-# DynamoDBService import would go here
+# Assume imports from above code
 
-def lambda_handler(event, context):
+def api_lambda_handler(event, context):
     """
-    AWS Lambda handler for ETL process.
+    API Lambda handler for receiving dataset acquisition triggers.
     
     Args:
         event: Lambda event
@@ -372,86 +541,122 @@ def lambda_handler(event, context):
         Lambda response
     """
     # Initialize the DynamoDB service
-    dynamo_service = DynamoDBService(
-        etl_table_name=os.environ.get('ETL_TABLE_NAME'),
-        data_table_name=os.environ.get('DATA_TABLE_NAME'),
-        region_name=os.environ.get('AWS_REGION', 'us-east-1')
+    dynamo_service = DataPlatformDynamoDBService(
+        run_table_name=os.environ.get('RUN_TABLE_NAME'),
+        file_table_name=os.environ.get('FILE_TABLE_NAME')
     )
     
-    # Create a new ETL job record
-    job_id = str(uuid4())
-    current_time = datetime.datetime.now().isoformat()
+    # Extract metadata from the event
+    dataset_name = event.get('datasetName')
+    business_date = event.get('businessDate')
+    source_type = event.get('sourceType', 'manual')
+    environment = os.environ.get('ENVIRONMENT', 'staging')
     
-    job_metadata = ETLJobMetadata(
-        job_id=job_id,
-        status='STARTED',
-        start_time=current_time,
-        source_details={'source': event.get('source')},
-        destination_details={'destination': event.get('destination')}
+    # Generate run ID (can be customized based on conventions)
+    run_id = f"{dataset_name}-{business_date}-{datetime.now().strftime('%Y%m%d%H%M%S')}"
+    
+    # Create run record
+    run_item = RunTableItem(
+        runId=run_id,
+        datasetName=dataset_name,
+        businessDate=business_date,
+        sourceType=source_type,
+        sourceTrigger=event.get('sourceTrigger', {}),
+        createdAt=datetime.now().isoformat(),
+        status="pending",
+        environment=environment,
+        metadata=event.get('metadata', {})
     )
     
-    dynamo_service.etl_jobs.create_job(job_metadata)
+    dynamo_service.runs.create_run(run_item)
     
-    try:
-        # Process the data (simplified for demonstration)
-        processed_items = process_data(event.get('data', []))
-        
-        # Write processed data to the data table
-        dynamo_service.processed_data.batch_write_items(processed_items)
-        
-        # Update ETL job status to completed
-        dynamo_service.etl_jobs.update_job_status(
-            job_id=job_id,
-            status='COMPLETED',
-            records_processed=len(processed_items),
-            end_time=datetime.datetime.now().isoformat()
+    # Resolve files based on dataset configuration
+    # (This would typically involve fetching dataset config from another table or service)
+    file_locations = resolve_file_locations(dataset_name, business_date, event)
+    
+    # Create file records
+    file_items = []
+    for location in file_locations:
+        file_id = dynamo_service.generate_file_id(dataset_name, business_date, location)
+        file_item = FileTableItem(
+            fileId=file_id,
+            runId=run_id,
+            datasetName=dataset_name,
+            businessDate=business_date,
+            environment=environment,
+            location=location,
+            status="pending",
+            lastUpdated=datetime.now().isoformat()
         )
-        
-        return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'job_id': job_id,
-                'status': 'COMPLETED',
-                'records_processed': len(processed_items)
-            })
-        }
-        
-    except Exception as e:
-        # Update ETL job status to failed
-        dynamo_service.etl_jobs.update_job_status(
-            job_id=job_id,
-            status='FAILED',
-            end_time=datetime.datetime.now().isoformat(),
-            error_details={'error': str(e)}
-        )
-        
-        # Re-raise to trigger Lambda retry if configured
-        raise
+        file_items.append(file_item)
+    
+    # Batch create file records
+    dynamo_service.files.batch_create_files(file_items)
+    
+    # Update run with resolved file count
+    dynamo_service.runs.update_run_status(
+        run_id=run_id,
+        status="dispatched",
+        processed_files=0
+    )
+    
+    # Dispatch to preprocessor (implementation depends on your architecture)
+    dispatch_to_preprocessor(run_id)
+    
+    return {
+        'statusCode': 200,
+        'body': json.dumps({
+            'runId': run_id,
+            'datasetName': dataset_name,
+            'businessDate': business_date,
+            'fileCount': len(file_items)
+        })
+    }
 
-def process_data(data_items):
-    """Process raw data items into format for DynamoDB."""
-    # Implementation would depend on specific ETL requirements
-    processed_items = []
-    
-    for item in data_items:
-        processed_item = {
-            'partition_key': item.get('id'),
-            'sort_key': datetime.datetime.now().isoformat(),
-            'data': item.get('data'),
-            'processed_time': datetime.datetime.now().isoformat(),
-            # Additional fields as needed
-        }
-        processed_items.append(processed_item)
-        
-    return processed_items
+def resolve_file_locations(dataset_name: str, business_date: str, event: Dict) -> List[str]:
+    """
+    Resolve file locations based on dataset configuration.
+    This would be implemented according to your platform's logic.
+    """
+    # Placeholder implementation
+    return []
+
+def dispatch_to_preprocessor(run_id: str):
+    """
+    Dispatch the run to preprocessor Lambda or Step Function.
+    This would be implemented according to your platform's architecture.
+    """
+    # Placeholder implementation
+    pass
 ```
 
-## Additional Considerations
+## Concise Overview
 
-1. **Index Design**: The ETL table should have a GSI on status to facilitate querying jobs by status
-2. **Time-to-Live (TTL)**: Consider adding TTL attributes to both tables for automatic cleanup
-3. **Throttling Handling**: Implement exponential backoff for retry logic
-4. **Cost Optimization**: Use on-demand capacity unless you have predictable workloads
-5. **Monitoring**: Add CloudWatch metrics for table operations
+**DynamoDB Service Design for Data Platform**
 
-Would you like me to elaborate on any specific aspect of this design? For example, I could dive deeper into index design strategies, transaction support, or how to optimize this for specific ETL patterns.
+1. **Model Layer**
+   - `RunTableItem`: Models run-level acquisition tracking
+   - `FileTableItem`: Models file-level processing tracking
+   - Strong validation on statuses and timestamps
+
+2. **RunTable Service**
+   - Run lifecycle management (`pending` → `success`/`failed`)
+   - Indexes for querying by dataset/date and status
+   - File count tracking for progress monitoring
+
+3. **FileTable Service**
+   - File lifecycle tracking across processing stages
+   - Batch creation for file sets in a run
+   - Query interface for run-based and dataset-based analysis
+
+4. **Core Platform Service**
+   - Table interface composition for single API exposure
+   - Deterministic fileId generation for deduplication
+   - Health monitoring for operational reliability
+
+5. **Lambda Integration Pattern**
+   - Trigger reception and run initialization
+   - File resolution and batch registration
+   - Status transitions and downstream dispatching
+
+This implementation aligns with your serverless event-driven architecture, providing idempotent operations, status tracking, and observability across your acquisition pipelines.
