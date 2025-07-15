@@ -1,23 +1,11 @@
-# Hey, I'm Alphonso
+# 👋🏼 Hey, I'm Alphonso
+Platform/Product Engineer who notices what's missing and builds it, architecting solutions that make the complex simple. Cloud, web, or mobile, I build for humans. 
 
-Platform engineer who builds infrastructure that makes complex systems simple.
+## What I'm building:
+**@ Work:** Founding engineer of multiple teams building data platforms and tooling that let business teams focus on their customers instead of fighting infrastructure.
 
-## What I Do
+**@ Home:** Apps for real life - AI-enhanced journaling, music production tools, learning/experimenting with enterprise-scale AI/ML
 
-**At JPMorgan:** Founding engineer building event-driven data platforms that enable teams to bypass 2.5 years of traditional development while operating at 70% under budget.
-
-**Philosophy:** The best platform is the one engineers don't have to think about.
-
-## Stack
-- **Platform:** AWS (Lambda, Step Functions, EKS), Terraform, Kubernetes  
-- **Languages:** Python, Go, SQL
-- **Data:** Snowflake, DynamoDB, event-driven architectures
-
-## Recent Work
-- **Data Acquisition Platform (JPMC)** - Event-driven serverless architecture processing 250GB+ workflows with exactly-once guarantees
-- **Chronikle** - An AI-enhanced personal knowledge system that combines journaling with intelligent insights. It features privacy-focused design,
-   on-device AI, rich media support (music, locations, web content), and seamless Apple ecosystem integration 
+- **Ritmo** - Open source music platform for culture fans (think Spotify meets community curation) with Ritmo Pro for producers - cloud project management, DAW-agnostic workflows, background bouncing, and eliminating rote production tasks
+- **Chronikle** - An AI-enhanced personal knowledge system that combines journaling with intelligent insights. Privacy-focused design, on-device AI, rich media support (music, locations, web content), and seamless Apple ecosystem integration 
 - **[RxVision](https://github.com/alphiephalphie/RxVision)** - End-to-end ML pipeline for medical image classification (93% accuracy)
-
----
-*I notice what's missing and build it*
