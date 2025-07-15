@@ -14,9 +14,10 @@ Platform engineer who builds infrastructure that makes complex systems simple.
 - **Data:** Snowflake, DynamoDB, event-driven architectures
 
 ## Recent Work
-- **Data Acquisition Platform** - Event-driven serverless architecture processing 250GB+ workflows with exactly-once guarantees
+- **Data Acquisition Platform (JPMC)** - Event-driven serverless architecture processing 250GB+ workflows with exactly-once guarantees
+- **Chronikle** - An AI-enhanced personal knowledge system that combines journaling with intelligent insights. It features privacy-focused design,
+   on-device AI, rich media support (music, locations, web content), and seamless Apple ecosystem integration 
 - **[RxVision](https://github.com/alphiephalphie/RxVision)** - End-to-end ML pipeline for medical image classification (93% accuracy)
-- **Chronikle** - iOS app with OpenAI integration for automated content generation
 
 ---
 *I notice what's missing and build it*
