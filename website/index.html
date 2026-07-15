@@ -119,16 +119,35 @@
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
   .employers {
-    display: flex; gap: clamp(14px, 5vw, 72px); flex-wrap: nowrap;
-    align-items: center; justify-content: center;
+    width: min(100%, 720px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 4vw, 52px);
+    align-items: center;
     padding: 32px 0;
   }
-  .employers img {
-    height: clamp(13px, 3.4vw, 34px); width: auto;
+  .employer {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .employer img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
     filter: grayscale(1) opacity(0.55);
   }
+  .employer-jpmorgan img {
+    width: clamp(130px, 17vw, 210px);
+    transform: translateY(3px);
+  }
+  .employer-humana img { width: clamp(100px, 13vw, 158px); }
+  .employer-target img { width: clamp(28px, 3vw, 36px); }
   @media (prefers-color-scheme: dark) {
-    .employers img { filter: grayscale(1) invert(1) opacity(0.6); }
+    .employer img { filter: grayscale(1) invert(1) opacity(0.6); }
   }
 
   .photo {
@@ -187,6 +206,13 @@
     .btn-icon { width: 40px; height: 40px; padding: 0; flex: none; }
     .systems { grid-template-columns: 1fr; gap: 24px; }
   }
+  @media (max-width: 620px) {
+    .employers {
+      grid-template-columns: minmax(0, 130px) minmax(0, 100px) 28px;
+      gap: 14px;
+      justify-content: center;
+    }
+  }
 </style>
 </head>
 <body>
@@ -208,9 +234,9 @@
   </div>
 
   <div class="employers" aria-label="Past employers">
-    <img src="logos/jpmorganchase.svg" alt="JPMorgan Chase">
-    <img src="logos/humana.svg" alt="Humana">
-    <img src="logos/target.svg" alt="Target">
+    <div class="employer employer-jpmorgan"><img src="logos/jpmorganchase.svg" alt="JPMorgan Chase"></div>
+    <div class="employer employer-humana"><img src="logos/humana.svg" alt="Humana"></div>
+    <div class="employer employer-target"><img src="logos/target.svg" alt="Target"></div>
   </div>
 
   <section>
