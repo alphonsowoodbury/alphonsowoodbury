@@ -1,16 +1,20 @@
 # Alphonso Woodbury
 
-I build human-centered data and AI systems that make complex work easier to understand, trust, and act on.
+I build tools for human creativity.
 
-My work sits at the intersection of product engineering, data platforms, and human-AI interaction: understanding how people work, structuring the information around them, and building technology that augments their judgment. I currently build enterprise data-platform capabilities at JPMorgan Chase.
+I'm a product-minded software engineer and longtime music producer working across native applications, creator workflows, data systems, and human-centered AI. I care about software that preserves context, protects authorship, and helps people move from an idea to finished work without replacing their judgment.
+
+I currently build enterprise data-platform capabilities at JPMorgan Chase while developing private tools for capture and music workflows.
 
 ## Selected work
 
-- **[MCPKit](https://github.com/alphonsowoodbury/MCPKit)** — a Swift framework for exposing local application capabilities to agents through a small, authenticated MCP transport.
+- **Memo** — a private native capture product designed to preserve the context around an idea and deliberately carry it into later work.
+- **Ritmo** — a local-first operating environment for creative projects and music workflows.
+- **[MCPKit](https://github.com/alphonsowoodbury/MCPKit)** — a Swift framework for exposing bounded local application capabilities to agents through an authenticated interface.
 - **[RPX](https://github.com/alphonsowoodbury/RPX)** — a Formula 1 companion built on reproducible historical and live-data pipelines, interactive analysis, and real circuit geometry.
-- **[Memo](https://alphonsowoodbury.com)** — a private native capture product for iPhone, iPad, and Mac that gives information useful structure at capture time.
+- **[RxVision](https://github.com/alphonsowoodbury/RxVision)** — a computer-vision research project exploring visual medication identification, data provenance, confidence-based abstention, and the gap between controlled validation and ordinary photographs.
 
-I care about systems whose behavior can be inspected: explicit data boundaries, provenance, reversible change, measurable quality, and interfaces designed for people rather than infrastructure.
+My current interests center on product engineering for music technology, creator tools, and broader creativity software.
 
 More about my work: **[alphonsowoodbury.com](https://alphonsowoodbury.com)** · **[LinkedIn](https://www.linkedin.com/in/alphonsowoodbury/)**
 
