@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alphonso Woodbury — Human-Centered Data &amp; AI Engineer</title>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="description" content="Alphonso Woodbury builds human-centered data and AI systems that make complex work easier to understand, trust, and act on.">
+<link rel="canonical" href="https://alphonsowoodbury.com/">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Alphonso Woodbury — Human-Centered Data &amp; AI Engineer">
+<meta property="og:description" content="I build human-centered data and AI systems that make complex work easier to understand, trust, and act on.">
+<meta property="og:url" content="https://alphonsowoodbury.com/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Alphonso Woodbury",
+  "jobTitle": "Human-Centered Data & AI Engineer",
+  "url": "https://alphonsowoodbury.com",
+  "email": "mailto:alphonso@alphonsowoodbury.com",
+  "address": { "@type": "PostalAddress", "addressRegion": "NY" },
+  "sameAs": [
+    "https://github.com/alphonsowoodbury",
+    "https://www.linkedin.com/in/alphonsowoodbury"
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --secondary: #6e6e73;
+    --tertiary: #aeaeb2;
+    --rule: #e8e8ed;
+    --accent: #0066cc;
+    --btn-bg: #1a1a1a;
+    --btn-text: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0d0d0f;
+      --text: #f2f2f4;
+      --secondary: #98989f;
+      --tertiary: #5e5e66;
+      --rule: #232328;
+      --accent: #4da3ff;
+      --btn-bg: #f2f2f4;
+      --btn-text: #0d0d0f;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 1020px; margin: 0 auto; padding: 0 32px; }
+  a { color: var(--text); text-decoration: none; }
+
+  /* hero — text left, photo right */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 72px;
+    align-items: center;
+    padding: 88px 0 16px;
+  }
+  .kicker {
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--secondary); margin-bottom: 20px;
+  }
+  .kicker .loc {
+    display: block;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--tertiary); margin-top: 3px;
+  }
+  h1 {
+    font-size: clamp(34px, 4.4vw, 52px);
+    font-weight: 650;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+  }
+  .sub {
+    font-size: 18px; color: var(--secondary);
+    line-height: 1.6; margin-top: 20px; max-width: 46ch;
+  }
+  .now {
+    font-size: 13.5px; color: var(--tertiary); margin-top: 14px;
+  }
+  .now span {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--secondary); margin-right: 8px;
+  }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 36px; }
+  .btn {
+    display: inline-flex; align-items: center;
+    font-size: 15px; font-weight: 550;
+    padding: 11px 22px; border-radius: 980px;
+    transition: opacity 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  }
+  .btn-primary { background: var(--btn-bg); color: var(--btn-text); }
+  .btn-primary:hover { opacity: 0.82; }
+  .btn-secondary { border: 1px solid var(--rule); color: var(--text); }
+  .btn-icon {
+    width: 46px; height: 46px; padding: 0;
+    justify-content: center; border-radius: 50%;
+    border: 1px solid var(--rule); color: var(--text);
+  }
+  .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .employers {
+    display: flex; gap: clamp(14px, 5vw, 72px); flex-wrap: nowrap;
+    align-items: center; justify-content: center;
+    padding: 32px 0;
+  }
+  .employers img {
+    height: clamp(13px, 3.4vw, 34px); width: auto;
+    filter: grayscale(1) opacity(0.55);
+  }
+  @media (prefers-color-scheme: dark) {
+    .employers img { filter: grayscale(1) invert(1) opacity(0.6); }
+  }
+
+  .photo {
+    width: 300px; aspect-ratio: 1 / 1;
+    border-radius: 50%; object-fit: cover;
+    background: var(--rule);
+    order: 2;
+  }
+  .photo-fallback {
+    width: 300px; aspect-ratio: 1 / 1;
+    border-radius: 50%; background: var(--rule);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--tertiary); font-size: 40px; font-weight: 500;
+  }
+
+  /* systems strip */
+  section { padding: 40px 0 0; }
+  h2 {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--tertiary); margin-bottom: 4px;
+  }
+  .systems {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 40px;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--rule);
+    margin-top: 16px;
+  }
+  .sys .t { font-size: 15.5px; font-weight: 550; line-height: 1.4; }
+  .sys .t a { border-bottom: 1px solid var(--rule); padding-bottom: 1px; }
+  .sys .t a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  .sys .d { font-size: 14px; color: var(--secondary); margin-top: 6px; line-height: 1.6; }
+
+  footer {
+    margin-top: 88px; padding: 24px 0 48px;
+    border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    font-size: 13px; color: var(--tertiary);
+  }
+  footer a { color: var(--secondary); }
+  footer a:hover { color: var(--accent); }
+  footer .fl { display: flex; gap: 22px; }
+
+  @media (max-width: 860px) {
+    .hero { display: block; padding-top: 56px; }
+    .photo, .photo-fallback {
+      float: right; width: 110px;
+      margin: 52px 0 14px 18px;
+      shape-outside: circle(50%);
+    }
+    .photo-fallback { font-size: 22px; }
+    .cta-row { clear: both; justify-content: center; flex-wrap: nowrap; gap: 9px; }
+    .btn { font-size: 13.5px; padding: 9px 15px; white-space: nowrap; }
+    .btn-icon { width: 40px; height: 40px; padding: 0; flex: none; }
+    .systems { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <img class="photo" src="headshot.jpg" alt="Alphonso Woodbury">
+    <div>
+      <div class="kicker">Alphonso Woodbury<span class="loc">New York</span></div>
+      <h1>I build human-centered data &amp; AI systems.</h1>
+      <p class="sub">I make complex work easier to understand, trust, and act on—combining product engineering, data platforms, and human-AI interaction.</p>
+      <p class="now"><span>Now · July 2026</span> Building data-quality orchestration on JPMorgan Chase's CDAO platform.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="mailto:alphonso@alphonsowoodbury.com">Get in touch</a>
+        <a class="btn btn-secondary" href="resume.pdf" target="_blank" rel="noopener">Resume</a>
+        <a class="btn btn-icon" href="https://www.linkedin.com/in/alphonsowoodbury" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-3.37-4-3.11-4 0v5.6h-3v-11h3v1.77c1.4-2.59 7-2.78 7 2.48v6.75z"/></svg></a>
+        <a class="btn btn-icon" href="https://github.com/alphonsowoodbury" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="employers" aria-label="Past employers">
+    <img src="logos/jpmorganchase.svg" alt="JPMorgan Chase">
+    <img src="logos/humana.svg" alt="Humana">
+    <img src="logos/target.svg" alt="Target">
+  </div>
+
+  <section>
+    <h2>Selected work</h2>
+    <div class="systems">
+      <div class="sys">
+        <div class="t">External data acquisition</div>
+        <div class="d">Designed and ran a centralized ingestion platform at JPMC — product teams get licensed and open-web data without standing up their own engineering. Five formats, files to 384GB, run at 30% of its budget.</div>
+      </div>
+      <div class="sys">
+        <div class="t">Data discovery marketplace</div>
+        <div class="d">Built governed search across 150K+ datasets — 2M+ daily queries at sub-2-second response, metadata standardized on W3C DCAT.</div>
+      </div>
+      <div class="sys">
+        <div class="t">Data quality orchestration</div>
+        <div class="d">Building the orchestration layer that connects Collibra data-quality rules to the applications that consume them — runs triggered, data validated and deduped, results published over Kafka.</div>
+      </div>
+      <div class="sys">
+        <div class="t"><a href="https://github.com/alphonsowoodbury/RPX" target="_blank" rel="noopener">RPX</a></div>
+        <div class="d">A Formula 1 companion that turns more than 70 years of race data, live timing, and real circuit geometry into an explorable race-day experience.</div>
+      </div>
+      <div class="sys">
+        <div class="t">Memo</div>
+        <div class="d">A native iPhone, iPad, and Mac capture app where AI does structural work at the moment of capture — turning a fast thought into a typed, queryable shape instead of prettified text. Built in Swift; private by design, no feeds and no tracking.</div>
+      </div>
+      <div class="sys">
+        <div class="t"><a href="https://github.com/alphonsowoodbury/MCPKit" target="_blank" rel="noopener">MCPKit</a></div>
+        <div class="d">A Swift framework that lets Apple-platform apps expose local tools and data to AI systems through a small, authenticated interface controlled by the host application.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Alphonso Woodbury</span>
+  </footer>
+
+</div>
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_WEBSITE_TOKEN"}'></script>
+<!-- End Cloudflare Web Analytics -->
+</body>
+</html>

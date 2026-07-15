@@ -1,8 +1,8 @@
 # Alphonso Woodbury
 
-I build data and AI platforms teams can trust.
+I build human-centered data and AI systems that make complex work easier to understand, trust, and act on.
 
-My work sits at the boundary between platform engineering and product: ingestion, data contracts, discovery, governance, quality orchestration, and the guardrails that let AI work safely against real data. I currently build enterprise data-platform capabilities at JPMorgan Chase.
+My work sits at the intersection of product engineering, data platforms, and human-AI interaction: understanding how people work, structuring the information around them, and building technology that augments their judgment. I currently build enterprise data-platform capabilities at JPMorgan Chase.
 
 ## Selected work
 
@@ -13,3 +13,5 @@ My work sits at the boundary between platform engineering and product: ingestion
 I care about systems whose behavior can be inspected: explicit data boundaries, provenance, reversible change, measurable quality, and interfaces designed for people rather than infrastructure.
 
 More about my work: **[alphonsowoodbury.com](https://alphonsowoodbury.com)** · **[LinkedIn](https://www.linkedin.com/in/alphonsowoodbury/)**
+
+The source for my personal website lives in [`website/`](website/).
