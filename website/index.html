@@ -150,6 +150,23 @@
     .employer img { filter: grayscale(1) invert(1) opacity(0.6); }
   }
 
+  .about-copy {
+    max-width: 780px;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--rule);
+  }
+  .about-copy p {
+    color: var(--secondary);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .about-copy p:first-child {
+    color: var(--text);
+    font-size: 18px;
+  }
+  .about-copy p:last-child { margin-bottom: 0; }
+
   .photo {
     width: 300px; aspect-ratio: 1 / 1;
     border-radius: 50%; object-fit: cover;
@@ -238,6 +255,16 @@
     <div class="employer employer-humana"><img src="logos/humana.svg" alt="Humana"></div>
     <div class="employer employer-target"><img src="logos/target.svg" alt="Target"></div>
   </div>
+
+  <section>
+    <h2>About</h2>
+    <div class="about-copy">
+      <p>I am a product-minded software engineer who builds data platforms and operational systems for complex, consequential work.</p>
+      <p>With more than a decade in regulated, data-intensive environments, I have worked across large-scale data acquisition, metadata and discovery, search performance, infrastructure as code, production delivery, and regulated cloud environments. The recurring challenge in my work is creating systems that people and teams can understand, trust, operate, and extend.</p>
+      <p>I am especially interested in platform products that combine strong domain models, clear interfaces, reliable operations, and thoughtful developer or operator experiences. My independent work also explores data visualization, native product design, scientific machine-learning boundaries, and secure tool integration.</p>
+      <p>I am developing toward broader technical leadership in data platforms, quality, governance, developer infrastructure, and complex data products.</p>
+    </div>
+  </section>
 
   <section>
     <h2>Selected work</h2>

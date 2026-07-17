@@ -2,9 +2,13 @@
 
 I build human-centered data platforms that make complex work easier to understand, trust, and act on.
 
-I'm a product-minded software engineer with nearly six years of experience building production data platforms and operational workflows at JPMorgan Chase. My work spans large-scale acquisition, metadata and discovery, search performance, infrastructure as code, and regulated cloud delivery.
+I am a product-minded software engineer who builds data platforms and operational systems for complex, consequential work.
 
-I care about coherent domain models, clear interfaces, reliable operations, and thoughtful developer and operator experiences. I am developing toward broader technical leadership in data platforms, quality, governance, and developer infrastructure.
+With more than a decade in regulated, data-intensive environments, I have worked across large-scale data acquisition, metadata and discovery, search performance, infrastructure as code, production delivery, and regulated cloud environments. The recurring challenge in my work is creating systems that people and teams can understand, trust, operate, and extend.
+
+I am especially interested in platform products that combine strong domain models, clear interfaces, reliable operations, and thoughtful developer or operator experiences. My independent work also explores data visualization, native product design, scientific machine-learning boundaries, and secure tool integration.
+
+I am developing toward broader technical leadership in data platforms, quality, governance, developer infrastructure, and complex data products.
 
 ## Selected work
 
