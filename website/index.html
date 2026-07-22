@@ -7,11 +7,11 @@
 <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="Alphonso Woodbury is a data platform engineer building systems for data delivery, discovery, acquisition, and quality.">
+<meta name="description" content="Alphonso Woodbury is a product-minded software engineer building human-centered data platforms and operational systems.">
 <link rel="canonical" href="https://alphonsowoodbury.com/">
 <meta property="og:type" content="profile">
 <meta property="og:title" content="Alphonso Woodbury — Data Platform Engineer">
-<meta property="og:description" content="I build foundational data platforms for ingestion, discovery, metadata, and quality.">
+<meta property="og:description" content="I build human-centered data platforms that make complex work easier to understand, trust, and act on.">
 <meta property="og:url" content="https://alphonsowoodbury.com/">
 <meta name="twitter:card" content="summary">
 <script type="application/ld+json">
@@ -19,7 +19,7 @@
   "@context": "https://schema.org",
   "@type": "Person",
   "name": "Alphonso Woodbury",
-  "jobTitle": "Software Engineer III",
+  "jobTitle": "Software Engineer III, Data Platforms",
   "url": "https://alphonsowoodbury.com",
   "email": "mailto:alphonso@alphonsowoodbury.com",
   "address": { "@type": "PostalAddress", "addressRegion": "NY" },
@@ -118,31 +118,36 @@
   .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
   .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
 
-  .platform-path {
-    width: min(100%, 840px);
+  .employers {
+    width: min(100%, 720px);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    padding: 34px 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(18px, 4vw, 52px);
+    align-items: center;
+    padding: 32px 0;
   }
-  .path-step {
-    padding: 0 18px;
-    border-left: 1px solid var(--rule);
-    text-align: center;
+  .employer {
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .path-step:last-child { border-right: 1px solid var(--rule); }
-  .path-step span {
+  .employer img {
     display: block;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: var(--tertiary);
-    margin-bottom: 3px;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    filter: grayscale(1) opacity(0.55);
   }
-  .path-step strong {
-    font-size: 14px;
-    font-weight: 550;
+  .employer-jpmorgan img {
+    width: clamp(130px, 17vw, 210px);
+    transform: translateY(3px);
+  }
+  .employer-humana img { width: clamp(100px, 13vw, 158px); }
+  .employer-target img { width: clamp(28px, 3vw, 36px); }
+  @media (prefers-color-scheme: dark) {
+    .employer img { filter: grayscale(1) invert(1) opacity(0.6); }
   }
 
   .about-copy {
@@ -219,12 +224,11 @@
     .systems { grid-template-columns: 1fr; gap: 24px; }
   }
   @media (max-width: 620px) {
-    .platform-path {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      row-gap: 22px;
+    .employers {
+      grid-template-columns: minmax(0, 130px) minmax(0, 100px) 28px;
+      gap: 14px;
+      justify-content: center;
     }
-    .path-step:nth-child(3) { border-left: 1px solid var(--rule); }
-    .path-step:nth-child(2) { border-right: 1px solid var(--rule); }
   }
 </style>
 </head>
@@ -235,9 +239,9 @@
     <img class="photo" src="headshot.jpg" alt="Alphonso Woodbury">
     <div>
       <div class="kicker">Alphonso Woodbury<span class="loc">New York</span></div>
-      <h1>I build foundational data platforms.</h1>
-      <p class="sub">I'm a product-minded data platform engineer. I design reliable systems for ingestion, discovery, metadata, and quality that teams can understand, operate, and extend.</p>
-      <p class="now"><span>Now · July 2026</span> Bringing an event-driven data-quality platform through final validation ahead of an August production rollout.</p>
+      <h1>I build human-centered data platforms.</h1>
+      <p class="sub">I'm a product-minded software engineer. I turn complex data and system boundaries into reliable platforms that teams can understand, trust, operate, and extend.</p>
+      <p class="now"><span>Now · July 2026</span> Building enterprise data-platform capabilities at JPMorgan Chase while developing independent data products and platform tools.</p>
       <div class="cta-row">
         <a class="btn btn-primary" href="mailto:alphonso@alphonsowoodbury.com">Get in touch</a>
         <a class="btn btn-icon" href="https://www.linkedin.com/in/alphonsowoodbury" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.75 1.75-1.75 1.75.78 1.75 1.75-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-3.37-4-3.11-4 0v5.6h-3v-11h3v1.77c1.4-2.59 7-2.78 7 2.48v6.75z"/></svg></a>
@@ -246,41 +250,48 @@
     </div>
   </div>
 
-  <div class="platform-path" aria-label="Data platform experience across four domains">
-    <div class="path-step"><span>2020</span><strong>Delivery</strong></div>
-    <div class="path-step"><span>2021</span><strong>Discovery</strong></div>
-    <div class="path-step"><span>2023</span><strong>Acquisition</strong></div>
-    <div class="path-step"><span>2026</span><strong>Quality</strong></div>
+  <div class="employers" aria-label="Past employers">
+    <div class="employer employer-jpmorgan"><img src="logos/jpmorganchase.svg" alt="JPMorgan Chase"></div>
+    <div class="employer employer-humana"><img src="logos/humana.svg" alt="Humana"></div>
+    <div class="employer employer-target"><img src="logos/target.svg" alt="Target"></div>
   </div>
 
   <section>
     <h2>About</h2>
     <div class="about-copy">
-      <p>My career at JPMorgan Chase traces a clear platform path: Data Delivery, Data Discovery, Data Acquisition, and now Data Quality.</p>
-      <p>Across nearly six years, I have built event-driven ingestion systems, metadata and search platforms, cloud infrastructure, observability, and data-quality capabilities in a regulated environment. I focus on turning fragmented workflows and system boundaries into dependable platform contracts.</p>
-      <p>My strongest work sits where platform architecture meets practical adoption: configuration instead of bespoke code, standards instead of one-off mappings, and interfaces that let teams operate safely without becoming infrastructure specialists.</p>
-      <p>I am pursuing senior and staff-level data platform roles focused on infrastructure, ingestion, metadata, governance, quality, and developer experience.</p>
+      <p>I am a product-minded software engineer who builds data platforms and operational systems for complex, consequential work.</p>
+      <p>With more than a decade in regulated, data-intensive environments, I have worked across large-scale data acquisition, metadata and discovery, search performance, infrastructure as code, production delivery, and regulated cloud environments. The recurring challenge in my work is creating systems that people and teams can understand, trust, operate, and extend.</p>
+      <p>I am especially interested in platform products that combine strong domain models, clear interfaces, reliable operations, and thoughtful developer or operator experiences. My independent work also explores data visualization, native product design, scientific machine-learning boundaries, and secure tool integration.</p>
+      <p>I am developing toward broader technical leadership in data platforms, quality, governance, developer infrastructure, and complex data products.</p>
     </div>
   </section>
 
   <section>
-    <h2>Platform experience</h2>
+    <h2>Selected work</h2>
     <div class="systems">
       <div class="sys">
-        <div class="t">Data Quality</div>
-        <div class="d">Architected an event-driven platform with Python, EKS, Argo, Avro, Kafka, and Iceberg that reduces exception detection from hours or days to approximately five minutes.</div>
+        <div class="t">Production data systems</div>
+        <div class="d">Nearly six years building consequential data and workflow platforms at JPMorgan Chase—spanning external acquisition, metadata, discovery, search, infrastructure, and operations.</div>
       </div>
       <div class="sys">
-        <div class="t">Data Acquisition</div>
-        <div class="d">Built a configuration-driven ingestion platform for approximately 45 external data products, supporting diverse formats and files up to 384GB while cutting onboarding time 40%.</div>
+        <div class="t"><a href="https://github.com/alphonsowoodbury/RPX" target="_blank" rel="noopener">RPX</a></div>
+        <div class="d">A Formula 1 companion that turns more than 70 years of race data, live timing, and real circuit geometry into an explorable race-day experience.</div>
       </div>
       <div class="sys">
-        <div class="t">Data Discovery</div>
-        <div class="d">Built and tuned an internal discovery platform for more than 150,000 datasets, serving over 2 million daily queries with sub-two-second Solr response times.</div>
+        <div class="t"><a href="https://github.com/alphonsowoodbury/MCPKit" target="_blank" rel="noopener">MCPKit</a></div>
+        <div class="d">A Swift framework that lets Apple-platform apps expose bounded local tools and data through an authenticated interface controlled by the host application.</div>
       </div>
       <div class="sys">
-        <div class="t">Data Delivery</div>
-        <div class="d">Developed pipeline-observability dashboards six months ahead of schedule while supporting a migration from Hadoop to cloud-native architecture.</div>
+        <div class="t"><a href="https://github.com/alphonsowoodbury/RxVision" target="_blank" rel="noopener">RxVision</a></div>
+        <div class="d">Computer-vision research into visual medication identification, with explicit data provenance, confidence-based abstention, and attention to the gap between controlled validation and ordinary photographs.</div>
+      </div>
+      <div class="sys">
+        <div class="t">Memo</div>
+        <div class="d">A private native capture product for iPhone, iPad, and Mac, designed to preserve the context around an idea and help a person deliberately carry it into later work.</div>
+      </div>
+      <div class="sys">
+        <div class="t">Ritmo</div>
+        <div class="d">A private, local-first operating environment for creative projects and music workflows—connecting songs, recordings, versions, people, decisions, external assets, and the next meaningful action.</div>
       </div>
     </div>
   </section>

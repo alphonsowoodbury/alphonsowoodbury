@@ -1,21 +1,25 @@
 # Alphonso Woodbury
 
-I build foundational data platforms for ingestion, discovery, metadata, and quality.
+I build human-centered data platforms that make complex work easier to understand, trust, and act on.
 
-I am a product-minded data platform engineer. My career at JPMorgan Chase traces a clear platform path: Data Delivery, Data Discovery, Data Acquisition, and Data Quality.
+I am a product-minded software engineer who builds data platforms and operational systems for complex, consequential work.
 
-Across nearly six years, I have built event-driven ingestion systems, metadata and search platforms, cloud infrastructure, observability, and data-quality capabilities in a regulated environment.
+With more than a decade in regulated, data-intensive environments, I have worked across large-scale data acquisition, metadata and discovery, search performance, infrastructure as code, production delivery, and regulated cloud environments. The recurring challenge in my work is creating systems that people and teams can understand, trust, operate, and extend.
 
-My strongest work sits where platform architecture meets practical adoption: configuration instead of bespoke code, standards instead of one-off mappings, and interfaces that let teams operate safely without becoming infrastructure specialists.
+I am especially interested in platform products that combine strong domain models, clear interfaces, reliable operations, and thoughtful developer or operator experiences. My independent work also explores data visualization, native product design, scientific machine-learning boundaries, and secure tool integration.
 
-I am pursuing senior and staff-level data platform roles focused on infrastructure, ingestion, metadata, governance, quality, and developer experience.
+I am developing toward broader technical leadership in data platforms, quality, governance, developer infrastructure, and complex data products.
 
-## Platform experience
+## Selected work
 
-- **Data Quality** — architected an event-driven platform with Python, EKS, Argo, Avro, Kafka, and Iceberg that reduces exception detection from hours or days to approximately five minutes.
-- **Data Acquisition** — built a configuration-driven ingestion platform for approximately 45 external data products, supporting diverse formats and files up to 384GB while cutting onboarding time 40%.
-- **Data Discovery** — built and tuned an internal discovery platform for more than 150,000 datasets, serving over 2 million daily queries with sub-two-second Solr response times.
-- **Data Delivery** — developed pipeline-observability dashboards six months ahead of schedule while supporting a migration from Hadoop to cloud-native architecture.
+- **Production data systems** — nearly six years building consequential data and workflow platforms at JPMorgan Chase, spanning external acquisition, metadata, discovery, search, infrastructure, and operations.
+- **[RPX](https://github.com/alphonsowoodbury/RPX)** — a Formula 1 companion built on reproducible historical and live-data pipelines, interactive analysis, and real circuit geometry.
+- **[MCPKit](https://github.com/alphonsowoodbury/MCPKit)** — a Swift framework for exposing bounded local application capabilities through an authenticated interface controlled by the host application.
+- **[RxVision](https://github.com/alphonsowoodbury/RxVision)** — a computer-vision research project exploring visual medication identification, data provenance, confidence-based abstention, and the gap between controlled validation and ordinary photographs.
+- **Memo** — a private native capture product designed to preserve the context around an idea and deliberately carry it into later work.
+- **Ritmo** — a local-first operating environment for creative projects and music workflows.
+
+My current interests center on data platforms, developer infrastructure, data quality and governance, and product engineering for complex operational systems.
 
 More about my work: **[alphonsowoodbury.com](https://alphonsowoodbury.com)** · **[LinkedIn](https://www.linkedin.com/in/alphonsowoodbury/)**
 
